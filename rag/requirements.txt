@@ -1,0 +1,20 @@
+# LangChain + Ollama
+langchain==0.3.25
+langchain-ollama==0.3.3
+langchain-community==0.3.23
+
+# Interface
+streamlit==1.45.1
+
+# PDF
+pypdf==5.4.0
+
+# Banco de dados (pgvector)
+psycopg2-binary==2.9.10
+pgvector==0.3.6
+
+# HTTP (para chamar a API Node.js)
+requests==2.32.3
+
+# Variáveis de ambiente
+python-dotenv==1.1.0

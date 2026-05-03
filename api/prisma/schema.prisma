@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Document {
+  id          String         @id @default(uuid())
+  filename    String
+  filepath    String
+  totalChunks Int            @default(0)
+  createdAt   DateTime       @default(now())
+  conversations Conversation[]
+
+  @@map("documents")
+}
+
+model Conversation {
+  id         String   @id @default(uuid())
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  question   String
+  answer     String
+  createdAt  DateTime @default(now())
+
+  @@map("conversations")
+}
