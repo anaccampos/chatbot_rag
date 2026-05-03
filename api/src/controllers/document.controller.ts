@@ -44,6 +44,25 @@ export async function getDocument(req: Request, res: Response) {
   res.json(document)
 }
 
+export async function updateDocument(req: Request, res: Response) {
+  const { id } = req.params
+  const { totalChunks } = req.body
+
+  const document = await prisma.document.findUnique({ where: { id } })
+
+  if (!document) {
+    res.status(404).json({ error: 'Documento não encontrado.' })
+    return
+  }
+
+  const updated = await prisma.document.update({
+    where: { id },
+    data: { totalChunks },
+  })
+
+  res.json(updated)
+}
+
 export async function deleteDocument(req: Request, res: Response) {
   const { id } = req.params
 
