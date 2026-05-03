@@ -18,3 +18,7 @@ requests==2.32.3
 
 # Variáveis de ambiente
 python-dotenv==1.1.0
+
+# Testes
+pytest==8.3.5
+pytest-mock==3.14.0
