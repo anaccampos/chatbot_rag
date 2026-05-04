@@ -149,25 +149,7 @@ psql -U $USER -d postgres -c "CREATE DATABASE chatbot_rag;"
 psql -U $USER -d chatbot_rag -c "CREATE EXTENSION IF NOT EXISTS vector;"
 ```
 
-### 4. API Node.js
-
-```bash
-cd api
-cp ../.env .env
-npm install
-npx prisma migrate dev
-```
-
-### 5. Python — RAG + Interface
-
-```bash
-cd rag
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-### 6. Ollama + modelos
+### 4. Ollama + modelos
 
 ```bash
 brew install ollama
@@ -177,6 +159,33 @@ ollama serve  # manter este terminal aberto
 ollama pull llama3.2
 ollama pull nomic-embed-text
 ```
+
+### 5. Dependências + banco de dados
+
+Com o arquivo `.env` criado, rode o setup completo com um único comando:
+
+```bash
+make setup
+```
+
+Esse comando instala as dependências da API e do Python e executa as migrations do Prisma. Para ver todos os comandos disponíveis:
+
+```bash
+make help
+```
+
+<details>
+<summary>Instalação manual (sem Make)</summary>
+
+```bash
+# API Node.js
+cd api && cp ../.env .env && npm install && npx prisma migrate dev
+
+# Python — RAG + Interface
+cd rag && python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
+```
+
+</details>
 
 ---
 
@@ -189,10 +198,10 @@ Abra **3 terminais** e execute um comando em cada:
 ollama serve
 
 # Terminal 2 — API Node.js
-cd api && npm run dev
+make dev-api
 
 # Terminal 3 — Interface Streamlit
-cd rag && source .venv/bin/activate && streamlit run app.py
+make dev-rag
 ```
 
 Acesse a interface em **http://localhost:8501**
@@ -234,11 +243,9 @@ curl -X DELETE http://localhost:3000/api/documents/<id>
 ## Testes
 
 ```bash
-# Testes da API (Node.js) — 16 testes
-cd api && npm test
-
-# Testes do RAG (Python) — 13 testes
-cd rag && source .venv/bin/activate && pytest tests/ -v
+make test        # todos os testes (API + RAG)
+make test-api    # Jest — API Node.js (16 testes)
+make test-rag    # pytest — RAG Python (13 testes)
 ```
 
 ---
@@ -256,3 +263,9 @@ Melhorias planejadas para versões futuras:
 - [ ] **Múltiplos documentos simultâneos** — permitir perguntas que cruzem informações de diferentes PDFs
 - [ ] **Modelos alternativos** — suporte a OpenAI GPT-4o e Google Gemini além do Ollama
 - [ ] **Troca de modelo via interface** — selecionar o modelo LLM diretamente pela UI do Streamlit
+
+---
+
+## Licença
+
+Distribuído sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
